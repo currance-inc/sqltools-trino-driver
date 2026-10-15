@@ -1,12 +1,12 @@
 {
-  "name": "sqltools-trino-driver",
-  "displayName": "Trino Driver",
+  "name": "sqltools-trino-driver-currance",
+  "displayName": "Trino Driver - Currance",
   "description": "Trino Driver for SQLTools",
-  "version": "0.2.13",
+  "version": "0.2.13-currance.1",
   "engines": {
     "vscode": "^1.84.0"
   },
-  "publisher": "regadas",
+  "publisher": "lucas.camargo-contractor@currance.com",
   "license": "MIT",
   "icon": "icon.png",
   "repository": {
@@ -18,13 +18,13 @@
   },
   "scripts": {
     "clean": "rimraf -rf out *.vsix",
-    "esbuild:ext": "esbuild ./src/extension.ts --bundle --external:vscode --platform=node --tsconfig=./tsconfig.json --log-level=info --color=true --format=cjs --target=es2017 --minify --outfile=./out/extension.js",
-    "esbuild:ls": "esbuild ./src/ls/plugin.ts --bundle --external:vscode --platform=node --tsconfig=./tsconfig.json --log-level=info --color=true --format=cjs --target=es2017 --minify --outfile=./out/ls/plugin.js",
-    "esbuild": "yarn esbuild:ext && yarn esbuild:ls",
+    "esbuild:ext": "esbuild ./src/extension.ts --bundle --external:vscode --external:*.node --platform=node --tsconfig=./tsconfig.json --log-level=info --color=true --format=cjs --target=es2017 --minify --outfile=./out/extension.js",
+    "esbuild:ls": "esbuild ./src/ls/plugin.ts --bundle --external:vscode --external:*.node --platform=node --tsconfig=./tsconfig.json --log-level=info --color=true --format=cjs --target=es2017 --minify --outfile=./out/ls/plugin.js",
+    "esbuild": "npm run esbuild:ext && npm run esbuild:ls",
     "copy": "cp package.json ./out/ls",
-    "prepackage": "yarn install && yarn clean && yarn esbuild && yarn copy",
-    "package": "vsce package --yarn --allow-star-activation",
-    "publish": "vsce publish --yarn --allow-star-activation",
+    "prepackage": "npm install && npm run clean && npm run esbuild && npm run copy",
+    "package": "npx vsce package --allow-star-activation",
+    "publish": "npx vsce publish --allow-star-activation",
     "test-compile": "tsc -p ./",
     "watch": "tsc -watch -p ./"
   },

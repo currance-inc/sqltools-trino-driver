@@ -22,6 +22,25 @@ export default class TrinoDriver
 {
   queries = queries;
 
+  private getConnectionAuthOptions(): Partial<ConnectionOptions> {
+    if (this.credentials.accessToken) {
+      return {
+        extraHeaders: {
+          Authorization: `Bearer ${this.credentials.accessToken}`,
+          "X-Trino-User": this.credentials.user,
+        },
+      };
+    }
+
+    if (this.credentials.user || this.credentials.password) {
+      return {
+        auth: new BasicAuth(this.credentials.user, this.credentials.password),
+      };
+    }
+
+    return {};
+  }
+
   public async open(): Promise<Trino> {
     if (this.connection) {
       return this.connection;
@@ -32,8 +51,8 @@ export default class TrinoDriver
       catalog: this.credentials.catalog,
       schema: this.credentials.schema,
       source: "sqltools-driver",
-      auth: new BasicAuth(this.credentials.user, this.credentials.password),
-      ssl: this.credentials.trinoOptions?.ssl, 
+      ssl: this.credentials.trinoOptions?.ssl,
+      ...this.getConnectionAuthOptions(),
     };
 
     try {

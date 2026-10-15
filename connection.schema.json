@@ -23,6 +23,11 @@
       "type": "string",
       "minLength": 1
     },
+    "accessToken": {
+      "title": "Access Token",
+      "type": "string",
+      "minLength": 1
+    },
     "trinoOptions": {
       "type": "object",
       "title": "Trino Options",

@@ -15,4 +15,4 @@ const TrinoDriverPlugin: ILanguageServerPlugin = {
   },
 };
 
-export default TrinoDriverPlugin;
+export = TrinoDriverPlugin;

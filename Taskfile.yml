@@ -1,0 +1,29 @@
+version: '3'
+
+vars:
+  VSIX_NAME: sqltools-trino-driver-currance-0.2.13-currance.1.vsix
+
+tasks:
+  clean:
+    desc: Remove build outputs and packaged artifacts
+    cmds:
+      - rm -rf out *.vsix
+
+  build:
+    desc: Build the extension bundles
+    cmds:
+      - ./node_modules/.bin/esbuild ./src/extension.ts --bundle --external:vscode --platform=node --tsconfig=./tsconfig.json --log-level=info --color=true --format=cjs --target=es2017 --minify --outfile=./out/extension.js
+      - ./node_modules/.bin/esbuild ./src/ls/plugin.ts --bundle --external:vscode --platform=node --tsconfig=./tsconfig.json --log-level=info --color=true --format=cjs --target=es2017 --minify --outfile=./out/ls/plugin.js
+      - cp package.json ./out/ls
+
+  package-vsix:
+    desc: Build and package the VSIX artifact
+    cmds:
+      - task: build
+      - node -e "global.File = class File {}; require('./node_modules/vsce/out/main')(['node','vsce','package','--no-yarn','--allow-star-activation'])"
+      - test -f {{.VSIX_NAME}}
+
+  build-vsix:
+    desc: Alias for package-vsix
+    cmds:
+      - task: package-vsix

@@ -5,10 +5,15 @@
     "schema",
     "user",
     "password",
+    "accessToken",
     "trinoOptions"
   ],
   "password": {
     "ui:widget": "password"
+  },
+  "accessToken": {
+    "ui:widget": "password",
+    "ui:help": "JWT bearer token for Trino. When provided, it takes precedence over password authentication."
   },
   "server": {
     "ui:help": "Trino server location i.e. http://localhost:8080"

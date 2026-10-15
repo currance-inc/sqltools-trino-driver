@@ -20,6 +20,19 @@
 
 After installation you will be able to explore tables and views, run queries, etc. For more details see SQLTools [documentation](https://vscode-sqltools.mteixeira.dev/features/bookmarks).
 
+## Authentication
+
+The driver supports the following authentication modes:
+
+- Basic authentication with `user` and `password`.
+- JWT bearer authentication with `accessToken`.
+
+When `accessToken` is provided, the driver sends `Authorization: Bearer <token>` and it takes precedence over password authentication.
+
+## Build VSIX
+
+See [docs/building-vsix.md](docs/building-vsix.md) for the exact steps to generate the distributable `.vsix` file.
+
 ## Contributing
 
 Please open GitHub issues and pull requests.
