@@ -54,7 +54,7 @@ fi
 The final artifact is generated in the repository root as:
 
 ```bash
-sqltools-trino-driver-currance-0.2.13-currance.1.vsix
+currance-inc-sqltools-trino-driver-0.2.13-currance.1.vsix
 ```
 
 ## Install locally in VS Code

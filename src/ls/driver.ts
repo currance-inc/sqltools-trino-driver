@@ -1,5 +1,4 @@
 import * as fs from "fs";
-import AbstractDriver from "@sqltools/base-driver";
 import queries from "./queries";
 import {
   IConnectionDriver,
@@ -12,13 +11,14 @@ import {
 import { v4 as generateId } from "uuid";
 import { QueryResult } from "./types";
 import { QueryParser } from "./parser";
+import BaseDriverCompat from "./base-driver-compat";
 import { BasicAuth, ConnectionOptions, QueryData, Trino } from "trino-client";
 
 type DriverLib = Trino;
 type DriverOptions = any;
 
 export default class TrinoDriver
-  extends AbstractDriver<DriverLib, DriverOptions>
+  extends BaseDriverCompat<DriverLib, DriverOptions>
   implements IConnectionDriver
 {
   queries = queries;
@@ -169,10 +169,10 @@ export default class TrinoDriver
     });
   }
 
-  public query: typeof AbstractDriver["prototype"]["query"] = async (
+  public query = async (
     query: string,
     opt = {}
-  ) => {
+  ): Promise<NSDatabase.IResult[]> => {
     const resultsAgg: NSDatabase.IResult[] = [];
     const db = await this.open();
 

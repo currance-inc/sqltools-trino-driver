@@ -1,7 +1,7 @@
 version: '3'
 
 vars:
-  VSIX_NAME: sqltools-trino-driver-currance-0.2.13-currance.1.vsix
+  VSIX_NAME: currance-inc-sqltools-trino-driver-0.2.13-currance.1.vsix
   NODE_BIN: '{{default "node" .NODE_BIN}}'
 
 tasks:

@@ -1,12 +1,12 @@
 {
-  "name": "sqltools-trino-driver-currance",
+  "name": "currance-inc-sqltools-trino-driver",
   "displayName": "Trino Driver - Currance",
   "description": "Trino Driver for SQLTools",
   "version": "0.2.13-currance.1",
   "engines": {
     "vscode": "^1.84.0"
   },
-  "publisher": "lucas.camargo-contractor@currance.com",
+  "publisher": "currance-inc",
   "license": "MIT",
   "icon": "icon.png",
   "repository": {
