@@ -5,7 +5,10 @@
     "schema",
     "user",
     "password",
+    "accessTokenSource",
     "accessToken",
+    "accessTokenEnvVar",
+    "accessTokenFilePath",
     "trinoOptions"
   ],
   "password": {
@@ -13,7 +16,16 @@
   },
   "accessToken": {
     "ui:widget": "password",
-    "ui:help": "JWT bearer token for Trino. When provided, it takes precedence over password authentication."
+    "ui:help": "Direct JWT bearer token value. This is kept for backwards compatibility."
+  },
+  "accessTokenEnvVar": {
+    "ui:help": "Name of the environment variable that contains the bearer token, such as TRINO_ACCESS_TOKEN."
+  },
+  "accessTokenFilePath": {
+    "ui:help": "Path to the file containing the token. The file content will be trimmed before use."
+  },
+  "accessTokenSource": {
+    "ui:help": "Choose whether the token is provided directly, from an environment variable, or from a file."
   },
   "server": {
     "ui:help": "Trino server location i.e. http://localhost:8080"

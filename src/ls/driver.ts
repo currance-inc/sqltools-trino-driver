@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import AbstractDriver from "@sqltools/base-driver";
 import queries from "./queries";
 import {
@@ -22,11 +23,54 @@ export default class TrinoDriver
 {
   queries = queries;
 
-  private getConnectionAuthOptions(): Partial<ConnectionOptions> {
+  private resolveAccessToken(): string | undefined {
+    const accessTokenSource = this.credentials.accessTokenSource || "none";
+
+    if (this.credentials.accessToken && accessTokenSource === "direct") {
+      return this.credentials.accessToken;
+    }
+
+    if (accessTokenSource === "environment") {
+      const envName = this.credentials.accessTokenEnvVar;
+      if (!envName) {
+        throw new Error("Access token environment variable name is required.");
+      }
+
+      const envValue = process.env[envName];
+      if (!envValue) {
+        throw new Error(`Environment variable ${envName} is not set.`);
+      }
+
+      return envValue.trim();
+    }
+
+    if (accessTokenSource === "file") {
+      const filePath = this.credentials.accessTokenFilePath;
+      if (!filePath) {
+        throw new Error("Access token file path is required.");
+      }
+
+      const token = fs.readFileSync(filePath, "utf8").trim();
+      if (!token) {
+        throw new Error(`Access token file is empty: ${filePath}`);
+      }
+
+      return token;
+    }
+
     if (this.credentials.accessToken) {
+      return this.credentials.accessToken;
+    }
+
+    return undefined;
+  }
+
+  private getConnectionAuthOptions(): Partial<ConnectionOptions> {
+    const accessToken = this.resolveAccessToken();
+    if (accessToken) {
       return {
         extraHeaders: {
-          Authorization: `Bearer ${this.credentials.accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
           "X-Trino-User": this.credentials.user,
         },
       };

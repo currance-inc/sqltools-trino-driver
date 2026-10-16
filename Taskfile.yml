@@ -2,6 +2,7 @@ version: '3'
 
 vars:
   VSIX_NAME: sqltools-trino-driver-currance-0.2.13-currance.1.vsix
+  NODE_BIN: '{{default "node" .NODE_BIN}}'
 
 tasks:
   clean:
@@ -10,17 +11,24 @@ tasks:
       - rm -rf out *.vsix
 
   build:
-    desc: Build the extension bundles
+    desc: Build the extension bundles in a portable way
     cmds:
-      - ./node_modules/.bin/esbuild ./src/extension.ts --bundle --external:vscode --platform=node --tsconfig=./tsconfig.json --log-level=info --color=true --format=cjs --target=es2017 --minify --outfile=./out/extension.js
-      - ./node_modules/.bin/esbuild ./src/ls/plugin.ts --bundle --external:vscode --platform=node --tsconfig=./tsconfig.json --log-level=info --color=true --format=cjs --target=es2017 --minify --outfile=./out/ls/plugin.js
+      - npm install
+      - npm run esbuild
       - cp package.json ./out/ls
 
   package-vsix:
-    desc: Build and package the VSIX artifact
+    desc: Build and package the VSIX artifact without hardcoded machine paths
     cmds:
       - task: build
-      - node -e "global.File = class File {}; require('./node_modules/vsce/out/main')(['node','vsce','package','--no-yarn','--allow-star-activation'])"
+      - |
+        if [ "{{.NODE_BIN}}" = "node" ]; then
+          npx @vscode/vsce package --allow-star-activation --no-yarn
+        elif [ -x "{{.NODE_BIN}}" ]; then
+          "{{.NODE_BIN}}" ./node_modules/vsce/vsce package --allow-star-activation --no-yarn
+        else
+          npx @vscode/vsce package --allow-star-activation --no-yarn
+        fi
       - test -f {{.VSIX_NAME}}
 
   build-vsix:

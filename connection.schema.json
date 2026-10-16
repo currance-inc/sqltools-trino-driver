@@ -23,10 +23,30 @@
       "type": "string",
       "minLength": 1
     },
+    "accessTokenSource": {
+      "title": "Access Token Source",
+      "type": "string",
+      "enum": ["none", "direct", "environment", "file"],
+      "default": "none",
+      "description": "Choose where the bearer token is loaded from."
+    },
     "accessToken": {
       "title": "Access Token",
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "Deprecated direct token value. Use the source selector above for env/file-based token loading."
+    },
+    "accessTokenEnvVar": {
+      "title": "Environment Variable Name",
+      "type": "string",
+      "minLength": 1,
+      "description": "Example: TRINO_ACCESS_TOKEN"
+    },
+    "accessTokenFilePath": {
+      "title": "Token File Path",
+      "type": "string",
+      "minLength": 1,
+      "description": "Absolute or relative path to a file containing the token."
     },
     "trinoOptions": {
       "type": "object",
